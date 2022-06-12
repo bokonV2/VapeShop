@@ -1,0 +1,104 @@
+*, *:before, *:after {
+  margin: 0;
+  padding: 0;
+  font-family: 'Roboto', sans-serif;
+}
+a{
+  text-decoration: none;
+}
+
+.bottom{
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  height: 55px;
+  width: 100vw;
+  position: absolute;
+  bottom: 0;
+}
+.contents{
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  width: 100vw;
+  padding-top: 5px;
+}
+.content{
+  width: 90vw;
+  margin: 5px 0;
+  padding: 5px;
+  border-radius: 10px;
+}
+/* shop */
+.Cshop{
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+}
+.Cshop a{
+  padding: 5px;
+  width: 70vw;
+  border-radius: 50px;
+  text-align: center;
+}
+/* news */
+.telegram{
+  padding: 10px;
+  margin: 10px;
+  width: 90vw;
+  border-radius: 50px;
+  text-align: center;
+  font-weight: 400;
+  font-size: 24px;
+}
+.Cnews{
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+}
+.Cnews h4{
+  width: 100%;
+  padding: 10px;
+  font-weight: 400;
+}
+/* login */
+.CloginPage{
+  height: 90vh;
+}
+.Clogin{
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+}
+.Clogin input, .Clogin a{
+  background: #F7F7F7;
+  border: 1px solid #000000;
+  border-radius: 50px;
+  padding: 5px;
+  margin: 5px;
+  width: 50vw;
+  text-align: center;
+}
+/* home */
+.Chome img{
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+}
+.Chome{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+.Chome h3{
+  width: 100%;
+  text-align: center;
+}
+.material-icons.md-18 { font-size: 18px; }
+.material-icons.md-24 { font-size: 24px; }
+.material-icons.md-36 { font-size: 36px; }
+.material-icons.md-48 { font-size: 48px; }

@@ -1,0 +1,33 @@
+{% extends "basic.html" %}
+{% block content %}
+<div class="contents CloginPage">
+
+  <div class="content Clogin">
+    <h3>Регистрация</h3>
+    {% if error == 2 %}
+      <h3>Данная почта уже зарегистрированна</h3>
+    {% endif %}
+    <form class="Clogin" action="/registration" method="post">
+      <input type="text" name="fio" value="" placeholder="Фамилия Имя">
+      <input type="text" name="email" value="" placeholder="Почта">
+      <input type="password" name="password" value="" placeholder="Пароль">
+      <input type="submit" name="" value="Зарегистрироваться">
+    </form>
+    <br>
+    <a href="/home">Зарегистрироваться через ВК</a>
+  </div>
+  <div class="content Clogin">
+    <h3>Логин</h3>
+    {% if error == 1 %}
+      <h3>Проверте правильность ввода</h3>
+    {% endif %}
+    <form class="Clogin" action='login' method="post">
+      <input type="text" name="email" value="" placeholder="Почта">
+      <input type="password" name="password" value="" placeholder="Пароль">
+      <input type="submit" name="" value="Войти">
+    </form>
+    <br>
+    <a href="/home">Войти через ВК</a>
+  </div>
+</div>
+{% endblock %}

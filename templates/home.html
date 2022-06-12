@@ -1,0 +1,20 @@
+{% extends "basic.html" %}
+{% block content %}
+<div class="contents ">
+
+  <div class="content Chome">
+    <img src="https://sun2.beltelecom-by-minsk.userapi.com/s/v1/ig2/o9ijSpAbZJki0Vm8DoHAxa2yZxLQhI6iyRVHOU4KhfJhkJ7l7eZuLP7ejaed3fvb6GKDx30GRj_dFP3nsBM9O96L.jpg?size=200x200&quality=96&crop=172,89,665,665&ava=1" alt="">
+    <h3>{{acc.fio}}</h3>
+    <a href="/logout">Выйти</a>
+  </div>
+  {% if acc.email == "admin" %}
+  <a class="telegram" href="/admin">Admin</a>
+  {% else %}
+  <a class="telegram" href="#">Привязать ВК</a>
+  {% endif %}
+  <div class="content Cnews">
+    <h3>История покупок</h3>
+    <h4>{{acc.history|safe}}</h4>
+  </div>
+</div>
+{% endblock %}

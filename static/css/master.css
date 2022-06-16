@@ -75,7 +75,6 @@ a{
   align-items: center;
 }
 .Clogin input, .Clogin a{
-  background: #F7F7F7;
   border: 1px solid #000000;
   border-radius: 50px;
   padding: 5px;
@@ -97,6 +96,22 @@ a{
 .Chome h3{
   width: 100%;
   text-align: center;
+}
+/* ADMIN */
+.popup{
+  position: fixed;
+  width: 100vw;
+  height: 100vh;
+  right: 0;
+  top: 0;
+  z-index: 100;
+}
+.zUp{
+  z-index: 101;
+}
+#cancel{
+  width: 90vw;
+  text-align: right;
 }
 .material-icons.md-18 { font-size: 18px; }
 .material-icons.md-24 { font-size: 24px; }

@@ -13,3 +13,9 @@ a{
 .telegram{
   background-color: gray;
 }
+.popup{
+  background-color: RGBA(100,100,100,.8);
+}
+.Clogin input, .Clogin a{
+  background: #F7F7F7;
+}

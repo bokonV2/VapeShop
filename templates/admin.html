@@ -3,9 +3,86 @@
 <div class="contents CloginPage">
 
   <div class="content Clogin">
-    <a class="telegram" style="width:80%;" href="#">Жидкости</a>
-    <a class="telegram" style="width:80%;" href="#">Аккаунты</a>
-    <a class="telegram" style="width:80%;" href="#">Новости</a>
+    {% if id == 0 %}
+    <a class="telegram" style="width:80%;" href="/admin/1">Жидкости</a>
+    <a class="telegram" style="width:80%;" href="/admin/2">Аккаунты</a>
+    <a class="telegram" style="width:80%;" href="/admin/3">Новости</a>
+    {% elif id == 1 %}
+    <a class="telegram" style="width:80%;" href="/admin">Назад</a>
+    <form class="Clogin" action="/sliquids" method="post">
+      <input type="text" name="name" value="" placeholder="Название">
+      <input type="text" name="salt" value="" placeholder="Соли">
+      <input type="text" name="cost" value="" placeholder="Цена">
+      <input type="number" name="count" value="" placeholder="Колличество">
+      <input type="submit" name="" value="Добавить">
+    </form>
+    <br><br>
+    <table style="width:98%">
+      <thead>
+        <th>Название</th>
+        <th>Соли</th>
+        <th>Цена</th>
+        <th>Колличество</th>
+        <th>______</th>
+      </thead>
+      <tbody>
+        {% for liq in acc %}
+        <tr>
+          <td>{{liq.name}}</td>
+          <td>{{liq.salt}}</td>
+          <td>{{liq.cost}}</td>
+          <td>{{liq.count}}</td>
+          <td><button type="button" name="button" onclick="popupM('{{liq.name}}', '{{liq.salt}}', {{liq.cost}}, {{liq.count}}, {{liq.id}})">Изменить</button></td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    {% elif id == 2 %}
+    <a class="telegram" style="width:80%;" href="/admin">Назад</a>
+    <table style="width:98%;">
+      <thead>
+        <th>Фио</th>
+        <th>Почта</th>
+        <th>ВК</th>
+        <th>Дата регистрации</th>
+      </thead>
+      <tbody>
+        {% for ac in acc %}
+        <tr>
+          <td>{{ac.fio}}</td>
+          <td>{{ac.email}}</td>
+          <td>{{ac.vk}}</td>
+          <td>{{ac.registration_date}}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+
+    </table>
+    {% elif id == 3 %}
+    <a class="telegram" style="width:80%;" href="/admin">Назад</a>
+    <form class="Clogin" action="/snews" method="post">
+      <input type="text" name="title" value="" placeholder="title">
+      <input type="text" name="text" value="" placeholder="text">
+      <input type="submit" name="" value="Добавить">
+    </form>
+    {% endif %}
+  </div>
+  <div id="popup" class="popup Clogin" style="display: none;">
+    <div class="content Clogin zUp">
+      <span id="cancel" class="material-icons md-48">cancel</span>
+      <form class="Clogin" action="/eliquids" method="post">
+        <a id="deleteLiq" href="">Удалить</a>
+        <h3 id="name"></h3>
+        <h3 id="salt"></h3><br>
+        <input id="id" type="number" name="id" hidden><br>
+        <h3>Цена:</h3>
+        <input id="price" type="number" name="price"><br>
+        <h3>Колличество:</h3>
+        <input id="count" type="number" name="count">
+        <input type="submit" name="" value="Изменить">
+      </form>
+    </div>
   </div>
 </div>
+<script src="/static/js/admin.js" charset="utf-8"></script>
 {% endblock %}

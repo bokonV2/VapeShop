@@ -1,17 +1,13 @@
 {% extends "basic.html" %}
 {% block content %}
 <div class="contents">
+  {% for liq in liqs %}
   <div class="content Cshop">
-    <h3>HotSpot Ананас Кокос</h3>
-    <h3>20 ULTRA SALT</h3>
-    <h3>n - в наличии</h3>
-    <a href="#"><h3>Купить за 15р</h3></a>
+    <h3>{{liq.name}}</h3>
+    <h3>{{liq.salt}}</h3>
+    <h3>{{liq.count}} - в наличии</h3>
+    <a href="#"><h3>Купить за {{liq.cost}}р</h3></a>
   </div>
-  <div class="content Cshop">
-    <h3>HotSpot Ананас Кокос</h3>
-    <h3>20 ULTRA SALT</h3>
-    <h3>n - в наличии</h3>
-    <a href="#"><h3>Купить за 15р</h3></a>
-  </div>
+  {% endfor %}
 </div>
 {% endblock %}

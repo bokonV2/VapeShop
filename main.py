@@ -1,11 +1,11 @@
 from flask import Flask, render_template, request, redirect, url_for, session
-from models import *
+from datetime import timedelta
 import flask_login
+from models import *
 import utilsDB
 
-
 app = Flask(__name__)
-app.secret_key = 'asda3r3tw423wgtss'  # Change this!
+app.secret_key = 'asda3r3tw423wgtss'
 
 login_manager = flask_login.LoginManager()
 login_manager.init_app(app)
@@ -16,9 +16,7 @@ class User(flask_login.UserMixin):
 
 @login_manager.user_loader
 def user_loader(email):
-    print(utilsDB.get_usersId())
     if email not in utilsDB.get_usersId():
-        print("Bb"*20)
         return
 
     user = User()
@@ -30,12 +28,21 @@ def user_loader(email):
 def request_loader(request):
     email = request.form.get('email')
     if email not in utilsDB.get_usersId():
-        print("Aa"*20)
         return
 
     user = User()
     user.id = email
     return user
+
+@app.route("/logout")
+@flask_login.login_required
+def logout():
+    flask_login.logout_user()
+    return redirect("/login")
+
+@login_manager.unauthorized_handler
+def unauthorized():
+    return redirect('/login')
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -46,13 +53,10 @@ def login():
 
     r = request.form.get
     acc = utilsDB.user_login(r("email"), r("password"))
-    print(acc)
     if acc:
-        print(acc)
-
         user = User()
         user.id = acc
-        flask_login.login_user(user)
+        flask_login.login_user(user, remember=True, duration=timedelta(days=365))
         return redirect('/home')
     return render_template('login.html', error=1)
 
@@ -74,32 +78,30 @@ def registration():
         return redirect('/home')
     return render_template('login.html', error=2)
 
-@app.route("/logout")
-@flask_login.login_required
-def logout():
-    flask_login.logout_user()
-    return redirect("/login")
-
-@login_manager.unauthorized_handler
-def unauthorized():
-    return redirect('/login')
-
 @app.route('/')
 def index():
     return render_template('basic.html')
 
 @app.route('/admin')
+@app.route('/admin/<int:id>')
 @flask_login.login_required
-def admin():
+def admin(id=0):
     if flask_login.current_user.id == "admin":
-        return render_template('admin.html')
+        if id == 1:
+            acc = utilsDB.get_liquids()
+        elif id == 2:
+            acc = utilsDB.get_users()
+        else:
+            acc = None
+        return render_template('admin.html', id=id, acc=acc)
     else:
         return redirect('/login')
 
 @app.route('/shop')
 @flask_login.login_required
 def shop():
-    return render_template('shop.html')
+    liqs = utilsDB.get_liquids()
+    return render_template('shop.html', liqs=liqs)
 
 @app.route('/news')
 def news():
@@ -123,16 +125,24 @@ def set_news():
 @app.route('/sliquids', methods=['POST'])
 def set_liquids():
     r = request.form.get
-    utilsDB.et_liquids(
+    utilsDB.set_liquids(
         name = r("name"),
         salt = r("salt"),
         cost = r("cost"),
         count = r("count")
     )
+    return redirect('/shop')
 
-@app.route('/saccounts', methods=['POST'])
-def set_accounts():
-    pass
+@app.route('/eliquids', methods=['POST'])
+def edit_liquids():
+    r = request.form.get
+    utilsDB.edit_liquids(r("id"),r("price"),r("count"))
+    return redirect('/admin/1')
+
+@app.route('/admin/del/<int:id>')
+def del_liquids(id):
+    utilsDB.del_liquids(id)
+    return redirect('/admin/1')
 
 @app.before_request
 def before_request():

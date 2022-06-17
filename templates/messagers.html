@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="ru" dir="ltr">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>VapeShop</title>
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/css/master.css">
+  <link rel="stylesheet" href="/static/css/style.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/3.0.4/socket.io.js" integrity="sha512-aMGMvNYu8Ue4G+fHa359jcPb1u+ytAF+P2SCb+PxrjCdO3n3ZTxJ30zuH39rimUggmTwmh2u7wvQsDTHESnmfQ==" crossorigin="anonymous"></script>
+  <script src="/static/js/messager.js" charset="utf-8"></script>
+</head>
+
+<body>
+  <div class="contents">
+    <div class="UpBar">
+      <img src="https://sun2.beltelecom-by-minsk.userapi.com/s/v1/ig2/o9ijSpAbZJki0Vm8DoHAxa2yZxLQhI6iyRVHOU4KhfJhkJ7l7eZuLP7ejaed3fvb6GKDx30GRj_dFP3nsBM9O96L.jpg?size=200x200&quality=96&crop=172,89,665,665&ava=1" alt="">
+      {% if acc.fio == "admin" %}
+      <h3>{{user.fio}}</h3>
+      <a href="/chats"><span class="material-icons md-48">arrow_back_ios_new</span></a>
+      {% else %}
+      <h3>VapeShop</h3>
+      <a href="/news"><span class="material-icons md-48">arrow_back_ios_new</span></a>
+      {% endif %}
+    </div>
+    <div class="Cmessager">
+      {% for mess in messages %}
+      {% if mess.channel == mess.whom %}
+      <div class="message__item Mright">
+        <span class="message Mto">{{mess.message}}</span>
+          <time class="message MtR">{{mess.time.hour}}:{{mess.time.minute}}</time>
+        </div>
+      {% else %}
+      <div class="message__item Mleft">
+        <span class="message Mme">{{mess.message}}</span>
+        <time class="message MtL">{{mess.time.hour}}:{{mess.time.minute}}</time>
+      </div>
+      {% endif %}
+      {% endfor %}
+    </div>
+
+    <div class="BottomBar">
+      <div class="chat-input">
+        <form>
+          <input type="text" name="mess" id="chat-input" placeholder="Send a message..." />
+          <button type="submit" class="chat-submit" id="chat-submit"><i class="material-icons md-36">send</i></button>
+        </form>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

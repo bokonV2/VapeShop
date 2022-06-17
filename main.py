@@ -1,6 +1,8 @@
 from flask import Flask, render_template, request, redirect, url_for, session
-from datetime import timedelta
+from flask_socketio import SocketIO, emit, join_room
+from datetime import timedelta, datetime
 import flask_login
+
 from models import *
 import utilsDB
 
@@ -10,26 +12,25 @@ app.secret_key = 'asda3r3tw423wgtss'
 login_manager = flask_login.LoginManager()
 login_manager.init_app(app)
 
+socketio = SocketIO(app)
 
 class User(flask_login.UserMixin):
     pass
 
+############################################################LOGIN@REGISSTRATION
 @login_manager.user_loader
 def user_loader(email):
     if email not in utilsDB.get_usersId():
         return
-
     user = User()
     user.id = email
     return user
-
 
 @login_manager.request_loader
 def request_loader(request):
     email = request.form.get('email')
     if email not in utilsDB.get_usersId():
         return
-
     user = User()
     user.id = email
     return user
@@ -47,10 +48,8 @@ def unauthorized():
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'GET':
-        if flask_login.current_user.is_authenticated:
-            return redirect('/home')
+        if flask_login.current_user.is_authenticated: return redirect('/home')
         return render_template('login.html')
-
     r = request.form.get
     acc = utilsDB.user_login(r("email"), r("password"))
     if acc:
@@ -64,7 +63,6 @@ def login():
 def registration():
     if request.method == 'GET':
         return render_template('login.html')
-
     r = request.form.get
     acc = utilsDB.set_accounts(
         fio = r("fio"),
@@ -77,15 +75,16 @@ def registration():
         flask_login.login_user(user)
         return redirect('/home')
     return render_template('login.html', error=2)
+############################################################LOGIN@REGISSTRATION
 
-@app.route('/')
+@app.route('/') ############################################TEMPLATE
 def index():
     return render_template('basic.html')
 
 @app.route('/admin')
 @app.route('/admin/<int:id>')
 @flask_login.login_required
-def admin(id=0):
+def admin(id=0): ###########################################ADMIN PAGE
     if flask_login.current_user.id == "admin":
         if id == 1:
             acc = utilsDB.get_liquids()
@@ -99,29 +98,58 @@ def admin(id=0):
 
 @app.route('/shop')
 @flask_login.login_required
-def shop():
-    liqs = utilsDB.get_liquids()
-    return render_template('shop.html', liqs=liqs)
+def shop(): ################################################SHOP PAGE
+    return render_template('shop.html', liqs=utilsDB.get_liquids())
+
+@app.route('/buy/<int:id>')
+@flask_login.login_required
+def buy_liquids(id): # TODO: TELEGRAMM NOTIFICATION ########BUY LIQUIDS
+    acc = utilsDB.get_user(flask_login.current_user.id)
+    liq = utilsDB.get_liquid(id)
+    message = f"Куплю {liq.id}:{liq.name},{liq.salt} за {liq.cost}р"
+    mess = utilsDB.set_messages(acc.id, acc.id, message)
+    return redirect(f'/messagers/{acc.id}')
 
 @app.route('/news')
-def news():
+def news(): ################################################SHOP PAGE
     return render_template('news.html')
+
+@app.route('/messagers')
+@app.route('/messagers/<int:id>')
+@flask_login.login_required
+def messagers(id=None): ####################################MESSAGE ROUTER
+    acc = utilsDB.get_user(flask_login.current_user.id)
+    if id == None:
+        if flask_login.current_user.id == "admin":
+            return redirect('/chats')
+        return redirect(f'/messagers/{acc.id}')
+    messages = utilsDB.get_messages(id)
+    user = utilsDB.get_userId(id)
+    return render_template('messagers.html',
+        messages=messages,
+        user=user,
+        acc=acc
+    )
+
+@app.route('/chats')
+@flask_login.login_required
+def chats(): ###############################################ADMIN CHATS
+    return render_template('chats.html', users=utilsDB.get_users())
 
 @app.route('/home')
 @flask_login.login_required
-def home():
-    acc = utilsDB.get_user(flask_login.current_user.id)
-    return render_template('home.html', acc=acc)
-
-# @app.route('/forAda', methods=['GET', 'POST'])
-# def forAda():
-#     return render_template('forAda.html')
+def home(): ################################################PROFILE PAGE
+    return render_template('home.html',
+        acc=utilsDB.get_user(flask_login.current_user.id)
+    )
 
 @app.route('/snews', methods=['POST'])
-def set_news():
+def set_news(): ############################################ADMIN NEWS
     r = request.form.get
     utilsDB.set_news(title=r("title"), text=r("text"))
+    return redirect('/news')
 
+###################################################################ADMIN LIQUIDS
 @app.route('/sliquids', methods=['POST'])
 def set_liquids():
     r = request.form.get
@@ -143,15 +171,37 @@ def edit_liquids():
 def del_liquids(id):
     utilsDB.del_liquids(id)
     return redirect('/admin/1')
-
+###################################################################ADMIN LIQUIDS
+########################################################################DATABASE
 @app.before_request
 def before_request():
-    db.connect()
+    db.connect(reuse_if_open=True)
 
 @app.after_request
 def after_request(response):
     db.close()
     return response
+########################################################################DATABASE
+
+@socketio.on('join')
+def on_join(data): #########################################JOIN TO ROOMS CHAT
+    join_room(data['channel'])
+
+@socketio.on('Msend')
+def on_send(data): # TODO: TELEGRAMM NOTIFICATION ##########RESIVE MESSAGE
+    acc = utilsDB.get_user(flask_login.current_user.id)
+    id = data['id']
+    message = data['message']
+    mess = utilsDB.set_messages(id, acc.id, message)
+    dta = {
+        "mess": message,
+        "time": f'{datetime.fromtimestamp(mess.time):%H:%M}',
+        "me": f"{acc.id}",
+        "channel": id
+    }
+    emit('Mget', dta, room=id)
+
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=8000, debug=True)
+    # app.run(host='0.0.0.0', port=8000, debug=True)
+    socketio.run(app, host='0.0.0.0', port=8000, debug=True)

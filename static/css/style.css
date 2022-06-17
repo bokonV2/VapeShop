@@ -19,3 +19,43 @@ a{
 .Clogin input, .Clogin a{
   background: #F7F7F7;
 }
+.UpBar{
+  background-color: #D9D9D9;
+}
+#chat-input::-webkit-input-placeholder { /* Chrome/Opera/Safari */
+  color: #ccc;
+}
+#chat-input::-moz-placeholder { /* Firefox 19+ */
+  color: #ccc;
+}
+#chat-input:-ms-input-placeholder { /* IE 10+ */
+  color: #ccc;
+}
+#chat-input:-moz-placeholder { /* Firefox 18- */
+  color: #ccc;
+}
+.chat-submit {
+  color:#5A5EB9;
+  background: transparent;
+}
+#chat-input {
+  background: #f4f7f9;
+  color:#888;
+}
+.Mme{
+  background-color: #eee;
+}
+.MtL{
+  background-color: #eee;
+}
+.Mto{
+  background-color: #0baaff;
+  color: #fff;
+}
+.MtR{
+  background-color: #0baaff;
+  color: #fff;
+}
+.Clogin input, .Clogin a{
+  border: 1px solid #000000;
+}

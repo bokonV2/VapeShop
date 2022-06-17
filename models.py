@@ -32,8 +32,8 @@ class Accounts(BaseModel):
 
 
 class Messages(BaseModel):
+    channel = IntegerField()
     whom = IntegerField()
-    to = IntegerField()
     message = TextField()
     time = TimestampField(default=datetime.timestamp(datetime.now()))
 

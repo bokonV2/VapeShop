@@ -22,7 +22,6 @@ a{
   flex-direction: column;
   align-items: center;
   width: 100vw;
-  padding-top: 5px;
 }
 .content{
   width: 90vw;
@@ -75,7 +74,6 @@ a{
   align-items: center;
 }
 .Clogin input, .Clogin a{
-  border: 1px solid #000000;
   border-radius: 50px;
   padding: 5px;
   margin: 5px;
@@ -113,6 +111,112 @@ a{
   width: 90vw;
   text-align: right;
 }
+/* messagers */
+.UpBar{
+  width: 100vw;
+  margin-bottom: 5px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-around;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+.UpBar img{
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  margin: 5px 0;
+}
+.UpBar h3{
+  /* width: auto; */
+  text-align: center;
+}
+.Cmessager{
+  padding: 0;
+  margin: 0;
+  list-style: none;
+  width: 100%;
+  position: relative;
+  margin-bottom: 100px;
+}
+.Cmessager::after {
+  content: "";
+  display: table;
+  clear: both;
+}
+.message__item {
+  max-width: 50%;
+  clear: both;
+}
+.Mleft{
+  float: left;
+}
+.Mright{
+  float: right;
+  text-align: right;
+}
+.message{
+  padding: 8px 15px;
+  margin-top: 2px;
+  display: inline-block;
+  text-align: left;
+}
+.Mme{
+  border-radius: 3px 20px 20px 0px;
+  margin-left: 15px;
+  margin-right: 60px;
+}
+.MtL{
+  border-radius: 0px 0px 20px 3px;
+  padding-top: 0px;
+  margin-left: 15px;
+  margin-top: 0;
+}
+.Mto{
+  border-radius: 20px 3px 0px 20px;
+  margin-right: 15px;
+}
+.MtR{
+  border-radius: 0px 0px 3px 20px;
+  padding-top: 0px;
+  margin-right: 15px;
+  margin-top: 0;
+  margin-left: 60px;
+}
+.BottomBar{
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100vw;
+
+}
+#chat-input {
+  width: -webkit-fill-available;
+  height:47px;
+  padding-top:5px;
+  padding-right:50px;
+  padding-bottom:5px;
+  padding-left:5px;
+  border:none;
+  resize:none;
+  outline:none;
+  overflow:hidden;
+}
+.chat-input > form {
+    margin-bottom: 0;
+}
+
+.chat-submit {
+  position: absolute;
+  bottom:8px;
+  right:10px;
+  box-shadow:none;
+  border:none;
+  border-radius:50%;
+}
+/* chats */
 .material-icons.md-18 { font-size: 18px; }
 .material-icons.md-24 { font-size: 24px; }
 .material-icons.md-36 { font-size: 36px; }

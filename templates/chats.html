@@ -1,0 +1,16 @@
+{% extends "basic.html" %}
+{% block content %}
+<div class="contents">
+
+  {% for user in users %}
+  <a href="/messagers/{{user.id}}">
+    <div class="content Chome">
+      <img src="https://sun2.beltelecom-by-minsk.userapi.com/s/v1/ig2/o9ijSpAbZJki0Vm8DoHAxa2yZxLQhI6iyRVHOU4KhfJhkJ7l7eZuLP7ejaed3fvb6GKDx30GRj_dFP3nsBM9O96L.jpg?size=200x200&quality=96&crop=172,89,665,665&ava=1" alt="">
+      <h3>{{user.fio}}</h3>
+      <span class="material-icons md-48">flag</span>
+    </div>
+  </a>
+  {% endfor %}
+</div>
+</div>
+{% endblock %}

@@ -37,9 +37,16 @@ class Messages(BaseModel):
     message = TextField()
     time = TimestampField(default=datetime.timestamp(datetime.now()))
 
+
+class Queries(BaseModel):
+    user_id = ForeignKeyField(Accounts, related_name='user')
+    liquid_id = ForeignKeyField(Liquids, related_name='liquid')
+
+
+
 def create_tables():
     with db:
-        db.create_tables([Liquids, News, Accounts, Messages])
+        db.create_tables([Liquids, News, Accounts, Messages, Queries])
 
 if __name__ == '__main__':
     create_tables()

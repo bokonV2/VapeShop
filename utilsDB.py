@@ -67,7 +67,43 @@ def set_news(title, text):
         title = title,
         text = text
     )
+
+def get_news(): return News.select()
 ############################################################################NEWS
+############################################################################SHOP
+def set_buy(acc, liq):
+    liq.count -= 1
+    liq.save()
+    Queries.create(user_id=acc, liquid_id=liq)
+
+def get_queries(): return Queries.select()
+
+def accept_queries(id):
+    q = Queries.select().where(Queries.id == id).get()
+    if q.user_id.history == None:
+        q.user_id.history = f"{q.liquid_id.name}<br>"
+    else:
+        q.user_id.history += f"{q.liquid_id.name}<br>"
+
+    q.user_id.save()
+    q.delete_instance()
+
+def cancel_queries(id):
+    q = Queries.select().where(Queries.id == id).get()
+    q.liquid_id.count += 1
+    q.liquid_id.save()
+    q.delete_instance()
+
+def adasd():
+    q = Queries.select().where(Queries.id == 1).get()
+    print(q)
+    print(q.user_id)
+    print(q.user_id.fio)
+    print(q.liquid_id)
+    print(q.liquid_id.name)
+    q.user_id.vk = False
+    q.user_id.save()
+############################################################################SHOP
 
 if __name__ == '__main__':
     pass

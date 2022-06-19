@@ -2,9 +2,11 @@
 {% block content %}
 <div class="contents">
   <a class="telegram" href="#">Telegram</a>
+  {% for new in news %}
   <div class="content Cnews">
-    <h3>HotSpot Ананас Кокос</h3>
-    <h4>20 ULTRA SALT</h4>
+    <h3>{{new.title}}</h3>
+    <h4>{{new.text}}</h4>
   </div>
+  {% endfor %}
 </div>
 {% endblock %}

@@ -106,13 +106,16 @@ def shop(): ################################################SHOP PAGE
 def buy_liquids(id): # TODO: TELEGRAMM NOTIFICATION ########BUY LIQUIDS
     acc = utilsDB.get_user(flask_login.current_user.id)
     liq = utilsDB.get_liquid(id)
+    if liq.count == 0:
+        return redirect('/shop')
     message = f"Куплю {liq.id}:{liq.name},{liq.salt} за {liq.cost}р"
     mess = utilsDB.set_messages(acc.id, acc.id, message)
+    utilsDB.set_buy(acc, liq)
     return redirect(f'/messagers/{acc.id}')
 
 @app.route('/news')
-def news(): ################################################SHOP PAGE
-    return render_template('news.html')
+def news(): ################################################NEWS PAGE
+    return render_template('news.html', news=utilsDB.get_news()) # TODO: TELEGRAMM NOTIFICATION
 
 @app.route('/messagers')
 @app.route('/messagers/<int:id>')
@@ -172,6 +175,21 @@ def del_liquids(id):
     utilsDB.del_liquids(id)
     return redirect('/admin/1')
 ###################################################################ADMIN LIQUIDS
+#########################################################################QUERIES
+
+@app.route('/querries')
+def querries():
+    return render_template('query.html', querries=utilsDB.get_queries())
+
+@app.route('/qur/<int:id>/<int:state>')
+def controlQuerrys(id, state):
+    if state:
+        utilsDB.accept_queries(id)
+    else:
+        utilsDB.cancel_queries(id)
+    return redirect('/querries')
+
+#########################################################################QUERIES
 ########################################################################DATABASE
 @app.before_request
 def before_request():
